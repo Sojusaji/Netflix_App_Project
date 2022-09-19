@@ -1,6 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:netflix_project/core/constants.dart';
 import 'package:netflix_project/presentation/search/widgets/title.dart';
 
