@@ -1,5 +1,6 @@
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
+import 'package:netflix_project/core/colors/colors.dart';
 import 'package:netflix_project/core/constants.dart';
 
 class NumberCard extends StatelessWidget {
@@ -34,15 +35,16 @@ class NumberCard extends StatelessWidget {
           ],
         ),
         Positioned(
-          left: 12,
-          top: 85,
+          top: 65,
           child: BorderedText(
-            strokeWidth: 10,
-            strokeColor: Colors.black,
+            strokeWidth: 5,
+            strokeColor: kWhiteColor,
             child: Text(
               '${index + 1}',
               style: const TextStyle(
-                  fontSize: 120,
+                  color: kBlackColor,
+                  fontSize: 140,
+                  fontWeight: FontWeight.bold,
                   decoration: TextDecoration.none,
                   decorationColor: Colors.black),
             ),
