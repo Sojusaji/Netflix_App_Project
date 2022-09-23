@@ -7,11 +7,16 @@ const kHeight20 = SizedBox(height: 20);
 //BorderRadius
 
 final BorderRadius kRadius10 = BorderRadius.circular(10);
+final BorderRadius kRadius30 = BorderRadius.circular(30);
 
 //image
 
 const kMainImage =
     "https://www.themoviedb.org/t/p/w440_and_h660_face/wE0I6efAW4cDDmZQWtwZMOW44EJ.jpg";
+
+//NewAndHotImage
+const newAndHotTempImage =
+    "https://www.themoviedb.org/t/p/w500_and_h282_face/se5Hxz7PArQZOG3Nx2bpfOhLhtV.jpg";
 
 //TextStyle
 
