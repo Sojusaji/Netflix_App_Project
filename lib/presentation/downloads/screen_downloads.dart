@@ -1,7 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:netflix_project/core/colors/colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:netflix_project/application/Downloads/downloads_bloc.dart';
+import 'package:netflix_project/core/colors.dart';
 import 'package:netflix_project/core/constants.dart';
 import 'package:netflix_project/presentation/widgets/app_bar_widget.dart';
 
@@ -34,16 +36,21 @@ class ScreenDownload extends StatelessWidget {
 }
 
 class Section2 extends StatelessWidget {
-  const Section2({Key? key}) : super(key: key);
-
+  Section2({Key? key}) : super(key: key);
+  final List imageList = [
+    "https://www.themoviedb.org/t/p/w440_and_h660_face/g8sclIV4gj1TZqUpnL82hKOTK3B.jpg",
+    "https://www.themoviedb.org/t/p/w440_and_h660_face/sKCr78MXSLixwmZ8DyJLrpMsd15.jpg",
+    "https://www.themoviedb.org/t/p/w440_and_h660_face/wE0I6efAW4cDDmZQWtwZMOW44EJ.jpg",
+  ];
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final List imageList = [
-      "https://www.themoviedb.org/t/p/w440_and_h660_face/g8sclIV4gj1TZqUpnL82hKOTK3B.jpg",
-      "https://www.themoviedb.org/t/p/w440_and_h660_face/sKCr78MXSLixwmZ8DyJLrpMsd15.jpg",
-      "https://www.themoviedb.org/t/p/w440_and_h660_face/wE0I6efAW4cDDmZQWtwZMOW44EJ.jpg",
-    ];
+    /* WidgetsBinding.instance.addPostFrameCallback((_) {
+      BlocProvider.of<DownloadsBloc>(context)
+          .add(const DownloadsEvent.getDownloadsImage());
+    });*/
+    BlocProvider.of<DownloadsBloc>(context)
+        .add(const DownloadsEvent.getDownloadsImage());
     return Column(
       children: [
         const Text(

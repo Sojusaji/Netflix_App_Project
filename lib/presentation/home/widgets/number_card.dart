@@ -1,6 +1,6 @@
 import 'package:bordered_text/bordered_text.dart';
 import 'package:flutter/material.dart';
-import 'package:netflix_project/core/colors/colors.dart';
+import 'package:netflix_project/core/colors.dart';
 import 'package:netflix_project/core/constants.dart';
 
 class NumberCard extends StatelessWidget {
