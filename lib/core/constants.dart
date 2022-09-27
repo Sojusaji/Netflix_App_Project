@@ -19,6 +19,10 @@ const kMainImage =
 const newAndHotTempImage =
     "https://www.themoviedb.org/t/p/w500_and_h282_face/se5Hxz7PArQZOG3Nx2bpfOhLhtV.jpg";
 
+//DownloadsAppendUrl
+
+const imageAppendUrl = "https://image.tmdb.org/t/p/w500";
+
 //TextStyle
 
 TextStyle kHomeTitleText = const TextStyle(

@@ -37,13 +37,16 @@ dependencies:
   google_fonts: ^3.0.1
   video_player: ^2.4.7
   bordered_text: ^2.0.0
-  flutter_bloc: ^8.1.1
+  
   json_serializable: ^6.4.0
   json_annotation: ^4.7.0
   dartz: ^0.10.1
   dio: ^4.0.6
   get_it: ^7.2.0
   injectable: ^1.5.3
+  bloc: ^8.1.0
+  flutter_bloc: ^8.1.1
+  freezed_annotation: ^2.1.0
   
 
 dev_dependencies:
