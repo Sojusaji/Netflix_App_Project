@@ -54,15 +54,16 @@ class ScreenHome extends StatelessWidget {
                 ),
                 scrollNotifier.value == true
                     ? AnimatedContainer(
-                        duration: Duration(milliseconds: 1000),
+                        duration: const Duration(milliseconds: 1000),
                         width: double.infinity,
                         height: 90,
                         color: Colors.black.withOpacity(0.3),
                         child: Column(
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Image(
+                                const Image(
                                   image: NetworkImage(
                                       "https://th.bing.com/th/id/R.d8f3c5ce449fd32fbe0fcfac58bd591a?rik=xEh2gQ1%2bQZX2hg&riu=http%3a%2f%2fcasting.flashmode.tn%2fwp-content%2fuploads%2f2018%2f05%2fnetflix.png&ehk=ChVtOp91gm31SePW24SWT5W4WSuZzWyV1FEk7fUXdn4%3d&risl=&pid=ImgRaw&r=0 "),
                                   width: 60,

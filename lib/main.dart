@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:netflix_project/application/Downloads/downloads_bloc.dart';
+import 'package:netflix_project/application/downloads/downloads_bloc.dart';
+
 import 'package:netflix_project/core/colors.dart';
-import 'package:netflix_project/domain/core/di/injectable.dart';
+import 'package:netflix_project/domain/core/di/injection.dart';
+
 import 'package:netflix_project/presentation/main_page/screen_main_page.dart';
 
 class MyHttpOverrides extends HttpOverrides {
@@ -18,9 +20,10 @@ class MyHttpOverrides extends HttpOverrides {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  HttpOverrides.global = MyHttpOverrides();
-  await configureInjection();
 
+  HttpOverrides.global = MyHttpOverrides();
+  await initGetIt();
+  //await configureInjection();
   runApp(const MyApp());
 }
 
@@ -31,7 +34,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => getIt<DownloadsBloc>(),
+          create: (context) => getit<DownloadsBloc>(),
         )
       ],
       child: MaterialApp(

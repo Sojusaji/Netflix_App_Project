@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
+
 import 'package:netflix_project/domain/core/api_end_points.dart';
 import 'package:netflix_project/domain/core/failures/main_failure.dart';
 import 'package:dartz/dartz.dart';

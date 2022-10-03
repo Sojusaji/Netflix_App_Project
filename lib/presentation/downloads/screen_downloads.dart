@@ -41,12 +41,14 @@ class Section2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      BlocProvider.of<DownloadsBloc>(context)
-          .add(const DownloadsEvent.getDownloadsImage());
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //BlocProvider.of<DownloadsBloc>(context)
+    //  .add(const DownloadsEvent.getDownloadsImage());
+    //});
 
+    final Size size = MediaQuery.of(context).size;
+    BlocProvider.of<DownloadsBloc>(context)
+        .add(const DownloadsEvent.getDownloadsImage());
     return Column(
       children: [
         const Text(
