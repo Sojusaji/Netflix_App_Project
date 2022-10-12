@@ -24,7 +24,7 @@ class ScreenMainPage extends StatelessWidget {
       body: SafeArea(
         child: ValueListenableBuilder(
             valueListenable: indexChangeNotifier,
-            builder: ((context, int index, child) {
+            builder: ((context1, int index, child) {
               return _pages[index];
             })),
       ),

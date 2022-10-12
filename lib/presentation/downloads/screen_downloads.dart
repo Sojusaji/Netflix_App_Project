@@ -2,14 +2,17 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:netflix_project/application/Downloads/downloads_bloc.dart';
+import 'package:netflix_project/application/downloads/downloads_bloc.dart';
+
 import 'package:netflix_project/core/colors.dart';
 import 'package:netflix_project/core/constants.dart';
+
 import 'package:netflix_project/presentation/widgets/app_bar_widget.dart';
 
 class ScreenDownload extends StatelessWidget {
-  ScreenDownload({Key? key}) : super(key: key);
-  final _widgetList = [
+  const ScreenDownload({Key? key}) : super(key: key);
+
+  final _widgetList = const [
     _SmartDownloads(),
     Section2(),
     Section3(),
@@ -23,56 +26,56 @@ class ScreenDownload extends StatelessWidget {
           child: AppBarWidget(
             title: "Downloads",
           )),
-      body: ListView.separated(
-        padding: EdgeInsets.all(10),
-        itemBuilder: ((context, index) => _widgetList[index]),
-        separatorBuilder: ((context, index) => SizedBox(
-              height: 25,
-            )),
-        itemCount: _widgetList.length,
-      ),
+      body: Builder(builder: (context) {
+        return ListView.separated(
+          padding: const EdgeInsets.all(10),
+          itemBuilder: (context, index) => _widgetList[index],
+          separatorBuilder: (context, index) => const SizedBox(
+            height: 25,
+          ),
+          itemCount: _widgetList.length,
+        );
+      }),
     );
   }
 }
 
 class Section2 extends StatelessWidget {
-  Section2({Key? key}) : super(key: key);
-  final List imageList = [
-    "https://www.themoviedb.org/t/p/w440_and_h660_face/g8sclIV4gj1TZqUpnL82hKOTK3B.jpg",
-    "https://www.themoviedb.org/t/p/w440_and_h660_face/sKCr78MXSLixwmZ8DyJLrpMsd15.jpg",
-    "https://www.themoviedb.org/t/p/w440_and_h660_face/wE0I6efAW4cDDmZQWtwZMOW44EJ.jpg",
-  ];
+  const Section2({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    /* WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       BlocProvider.of<DownloadsBloc>(context)
           .add(const DownloadsEvent.getDownloadsImage());
-    });*/
-    BlocProvider.of<DownloadsBloc>(context)
-        .add(const DownloadsEvent.getDownloadsImage());
-    return Column(
-      children: [
-        const Text(
-          "Introducing Downloads for You ",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: kWhiteColor,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
+    });
+    //BlocProvider.of<DownloadsBloc>(context)
+    //  .add(const DownloadsEvent.getDownloadsImage());
+
+    final Size size = MediaQuery.of(context).size;
+
+    return Column(children: [
+      const Text(
+        "Introducing Downloads for You ",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: kWhiteColor,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
         ),
-        kHeight,
-        const Text(
-          "We'll download a personalised selection of\nmovies and shows for you, so there'S\nalways something to watch on your\ndevice.",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.grey,
-            fontSize: 16,
-          ),
+      ),
+      kHeight,
+      const Text(
+        "We'll download a personalised selection of\nmovies and shows for you, so there'S\nalways something to watch on your\ndevice.",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.grey,
+          fontSize: 16,
         ),
-        kHeight,
-        SizedBox(
+      ),
+      kHeight,
+      BlocBuilder<DownloadsBloc, DownloadsState>(builder: (context, state) {
+        return SizedBox(
           width: size.width,
           height: size.width,
           child: Stack(
@@ -83,32 +86,32 @@ class Section2 extends StatelessWidget {
                 backgroundColor: Colors.grey.withOpacity(0.5),
               ),
               DwonloadsImageWidget(
-                imageList: imageList[0],
-                margin: EdgeInsets.only(
+                imageList: '$imageAppendUrl${state.downloads[9].posterPath}',
+                margin: const EdgeInsets.only(
                   left: 165,
                 ),
                 angle: 20,
                 size: Size(size.width * 0.5, size.width * 0.60),
               ),
               DwonloadsImageWidget(
-                imageList: imageList[1],
-                margin: EdgeInsets.only(
+                imageList: '$imageAppendUrl${state.downloads[10].posterPath}',
+                margin: const EdgeInsets.only(
                   right: 165,
                 ),
                 angle: -20,
                 size: Size(size.width * 0.5, size.width * 0.60),
               ),
               DwonloadsImageWidget(
-                imageList: imageList[2],
+                imageList: '$imageAppendUrl${state.downloads[11].posterPath}',
                 radius: 20,
-                margin: EdgeInsets.only(bottom: 20),
+                margin: const EdgeInsets.only(bottom: 20),
                 size: Size(size.width * 0.6, size.width * 0.65),
               ),
             ],
           ),
-        ),
-      ],
-    );
+        );
+      })
+    ]);
   }
 }
 
