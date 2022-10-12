@@ -45,12 +45,8 @@ class Section2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      BlocProvider.of<DownloadsBloc>(context)
-          .add(const DownloadsEvent.getDownloadsImage());
-    });
-    //BlocProvider.of<DownloadsBloc>(context)
-    //  .add(const DownloadsEvent.getDownloadsImage());
+    BlocProvider.of<DownloadsBloc>(context)
+        .add(const DownloadsEvent.getDownloadsImage());
 
     final Size size = MediaQuery.of(context).size;
 
@@ -75,41 +71,44 @@ class Section2 extends StatelessWidget {
       ),
       kHeight,
       BlocBuilder<DownloadsBloc, DownloadsState>(builder: (context, state) {
-        return SizedBox(
-          width: size.width,
-          height: size.width,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              CircleAvatar(
-                radius: size.width * 0.4,
-                backgroundColor: Colors.grey.withOpacity(0.5),
-              ),
-              DwonloadsImageWidget(
-                imageList: '$imageAppendUrl${state.downloads[9].posterPath}',
-                margin: const EdgeInsets.only(
-                  left: 165,
+        if (state.downloads.isNotEmpty) {
+          return SizedBox(
+            width: size.width,
+            height: size.width,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                CircleAvatar(
+                  radius: size.width * 0.4,
+                  backgroundColor: Colors.grey.withOpacity(0.5),
                 ),
-                angle: 20,
-                size: Size(size.width * 0.5, size.width * 0.60),
-              ),
-              DwonloadsImageWidget(
-                imageList: '$imageAppendUrl${state.downloads[10].posterPath}',
-                margin: const EdgeInsets.only(
-                  right: 165,
+                DwonloadsImageWidget(
+                  imageList: '$imageAppendUrl${state.downloads[9].posterPath}',
+                  margin: const EdgeInsets.only(
+                    left: 165,
+                  ),
+                  angle: 20,
+                  size: Size(size.width * 0.5, size.width * 0.60),
                 ),
-                angle: -20,
-                size: Size(size.width * 0.5, size.width * 0.60),
-              ),
-              DwonloadsImageWidget(
-                imageList: '$imageAppendUrl${state.downloads[11].posterPath}',
-                radius: 20,
-                margin: const EdgeInsets.only(bottom: 20),
-                size: Size(size.width * 0.6, size.width * 0.65),
-              ),
-            ],
-          ),
-        );
+                DwonloadsImageWidget(
+                  imageList: '$imageAppendUrl${state.downloads[10].posterPath}',
+                  margin: const EdgeInsets.only(
+                    right: 165,
+                  ),
+                  angle: -20,
+                  size: Size(size.width * 0.5, size.width * 0.60),
+                ),
+                DwonloadsImageWidget(
+                  imageList: '$imageAppendUrl${state.downloads[11].posterPath}',
+                  radius: 20,
+                  margin: const EdgeInsets.only(bottom: 20),
+                  size: Size(size.width * 0.6, size.width * 0.65),
+                ),
+              ],
+            ),
+          );
+        }
+        return const CircularProgressIndicator();
       })
     ]);
   }
