@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix_project/application/downloads/downloads_bloc.dart';
 import 'package:netflix_project/application/fast_laugh/fast_laugh_bloc.dart';
+import 'package:netflix_project/application/home/home_bloc.dart';
 
 import 'package:netflix_project/core/colors.dart';
 import 'package:netflix_project/domain/core/di/injectable.dart';
 
 import 'package:netflix_project/presentation/main_page/screen_main_page.dart';
 
+import 'application/new_and_hot/new_and_hot_bloc.dart';
 import 'application/search/search_bloc.dart';
 
 class MyHttpOverrides extends HttpOverrides {
@@ -39,6 +41,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (ctx) => getIt<DownloadsBloc>()),
         BlocProvider(create: (ctx) => getIt<SearchBloc>()),
         BlocProvider(create: (ctx) => getIt<FastLaughBloc>()),
+        BlocProvider(create: (ctx) => getIt<NewAndHotBloc>()),
+        BlocProvider(create: (ctx) => getIt<HomeBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

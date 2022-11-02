@@ -5,8 +5,14 @@ import 'package:netflix_project/presentation/home/widgets/custom_button_widget.d
 import 'package:netflix_project/presentation/new_and_hot/widgets/video_widget.dart';
 
 class EveryonesWatchingWidget extends StatelessWidget {
+  final String posterPath;
+  final String movieName;
+  final String description;
   const EveryonesWatchingWidget({
     Key? key,
+    required this.posterPath,
+    required this.movieName,
+    required this.description,
   }) : super(key: key);
 
   @override
@@ -15,20 +21,24 @@ class EveryonesWatchingWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         kHeight,
-        const Text(
-          "Friends",
-          style: TextStyle(
+        Text(
+          movieName,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
         kHeight,
-        const Text(
-          "This hit sitcom follows the merry misadventures of six 20-something pals as they navigatethe pitfalls of work, life and love in 1998s Manhattam.",
-          style: TextStyle(color: kGreyColor),
+        Text(
+          description,
+          maxLines: 5,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(color: kGreyColor),
         ),
         kHeight50,
-        const VideoWidget(),
+        VideoWidget(
+          url: posterPath,
+        ),
         kHeight,
         Row(
           mainAxisAlignment: MainAxisAlignment.end,

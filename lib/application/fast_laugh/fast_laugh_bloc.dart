@@ -23,6 +23,7 @@ final dummyVideoUrls = [
   "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4",
 ];
 ValueNotifier<Set<int>> likedVideosIdsNotifier = ValueNotifier({});
+ValueNotifier<Set<int>> myListVideoIdNotifier = ValueNotifier({});
 
 @injectable
 class FastLaughBloc extends Bloc<FastLaughEvent, FastLaughState> {
@@ -54,14 +55,5 @@ class FastLaughBloc extends Bloc<FastLaughEvent, FastLaughState> {
 
       //send to ui
     });
-    /*on<LikedVideo>((event, emit) async {
-      likedVideosIdsNotifier.value.add(event.id);
-      likedVideosIdsNotifier.notifyListeners();
-    });
-
-    on<UnlikeVideo>((event, emit) async {
-      likedVideosIdsNotifier.value.remove(event.id);
-      likedVideosIdsNotifier.notifyListeners();
-    });*/
   }
 }

@@ -84,7 +84,7 @@ class Section2 extends StatelessWidget {
                   backgroundColor: Colors.grey.withOpacity(0.5),
                 ),
                 DwonloadsImageWidget(
-                  imageList: '$imageAppendUrl${state.downloads[9].posterPath}',
+                  imageList: '$imageAppendUrl${state.downloads[0].posterPath}',
                   margin: const EdgeInsets.only(
                     left: 165,
                   ),
@@ -92,7 +92,7 @@ class Section2 extends StatelessWidget {
                   size: Size(size.width * 0.5, size.width * 0.60),
                 ),
                 DwonloadsImageWidget(
-                  imageList: '$imageAppendUrl${state.downloads[10].posterPath}',
+                  imageList: '$imageAppendUrl${state.downloads[1].posterPath}',
                   margin: const EdgeInsets.only(
                     right: 165,
                   ),
@@ -100,7 +100,7 @@ class Section2 extends StatelessWidget {
                   size: Size(size.width * 0.5, size.width * 0.60),
                 ),
                 DwonloadsImageWidget(
-                  imageList: '$imageAppendUrl${state.downloads[11].posterPath}',
+                  imageList: '$imageAppendUrl${state.downloads[2].posterPath}',
                   radius: 20,
                   margin: const EdgeInsets.only(bottom: 20),
                   size: Size(size.width * 0.6, size.width * 0.65),

@@ -1,8 +1,7 @@
-import 'dart:async';
 import 'dart:developer';
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix_project/application/fast_laugh/fast_laugh_bloc.dart';
 import 'package:netflix_project/core/colors.dart';
 import 'package:netflix_project/core/constants.dart';
@@ -31,23 +30,53 @@ class VideoListItemInheritedWidget extends InheritedWidget {
   }
 }
 
-class VideoListItem extends StatelessWidget {
+class VideoListItem extends StatefulWidget {
   final int index;
+  final videoUrl;
   const VideoListItem({
     Key? key,
     required this.index,
+    required this.videoUrl,
   }) : super(key: key);
+
+  @override
+  State<VideoListItem> createState() => _VideoListItemState();
+}
+
+class _VideoListItemState extends State<VideoListItem> {
+  late VideoPlayerController _videoPlayerController;
+  bool audioController = true;
+  bool videoPlayerControllerValue = true;
+  @override
+  void initState() {
+    _videoPlayerController = VideoPlayerController.network(widget.videoUrl);
+    _videoPlayerController.initialize().then((value) {
+      setState(() {
+        _videoPlayerController.play();
+        _videoPlayerController.setLooping(true);
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final posterPath =
         VideoListItemInheritedWidget.of(context)?.movieData.posterPath;
-    final videoUrl = dummyVideoUrls[index % dummyVideoUrls.length];
     return Stack(
       children: [
-        FastLaughVideoPlayer(
-          videoUrl: videoUrl,
-          onStateChanged: (bool isPlaying) {},
+        SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: _videoPlayerController.value.isInitialized
+              ? AspectRatio(
+                  aspectRatio: _videoPlayerController.value.aspectRatio,
+                  child: VideoPlayer(_videoPlayerController))
+              : const Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                  ),
+                ),
         ),
         Align(
           alignment: Alignment.bottomCenter,
@@ -63,15 +92,31 @@ class VideoListItem extends StatelessWidget {
                   backgroundColor: Colors.black.withOpacity(0.5),
                   radius: 30,
                   child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.volume_off,
-                      color: kWhiteColor,
-                      size: 30,
-                    ),
+                    onPressed: () {
+                      setState(() {
+                        if (audioController == true) {
+                          _videoPlayerController.setVolume(0.0);
+                          audioController = false;
+                        } else {
+                          _videoPlayerController.setVolume(1.0);
+                          audioController = true;
+                        }
+                      });
+                    },
+                    icon: audioController == true &&
+                            videoPlayerControllerValue == true
+                        ? const Icon(
+                            Icons.volume_up,
+                            color: kWhiteColor,
+                            size: 30,
+                          )
+                        : const Icon(
+                            Icons.volume_off,
+                            color: kWhiteColor,
+                            size: 30,
+                          ),
                   ),
                 ),
-
                 //right side
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -87,7 +132,7 @@ class VideoListItem extends StatelessWidget {
                       valueListenable: likedVideosIdsNotifier,
                       builder: (BuildContext c, Set<int> newLikedListIds,
                           Widget? _) {
-                        final _index = index;
+                        final _index = widget.index;
                         if (newLikedListIds.contains(_index)) {
                           return GestureDetector(
                             onTap: () {
@@ -112,7 +157,31 @@ class VideoListItem extends StatelessWidget {
                         );
                       },
                     ),
-                    const VideoActionWidget(icon: Icons.add, title: 'My List'),
+                    ValueListenableBuilder(
+                        valueListenable: myListVideoIdNotifier,
+                        builder: (BuildContext myListContext, Set<int> myListId,
+                            Widget? _) {
+                          final myListIndex = widget.index;
+                          if (myListId.contains(myListIndex)) {
+                            return GestureDetector(
+                              onTap: () {
+                                myListVideoIdNotifier.value.remove(myListIndex);
+                                myListVideoIdNotifier.notifyListeners();
+                              },
+                              child: const VideoActionWidget(
+                                  icon: Icons.check_circle_outline_rounded,
+                                  title: 'Added'),
+                            );
+                          }
+                          return GestureDetector(
+                            onTap: () {
+                              myListVideoIdNotifier.value.add(myListIndex);
+                              myListVideoIdNotifier.notifyListeners();
+                            },
+                            child: const VideoActionWidget(
+                                icon: Icons.add, title: 'MyList'),
+                          );
+                        }),
                     GestureDetector(
                         onTap: () {
                           log('Share clicked');
@@ -127,10 +196,23 @@ class VideoListItem extends StatelessWidget {
                         },
                         child: const VideoActionWidget(
                             icon: Icons.share, title: 'Share')),
-
-                    // VedioPlayAndPauseButton(videoPlayerController: );
-                    /*const VideoActionWidget(
-                        icon: Icons.play_arrow, title: 'Play'),*/
+                    GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            if (_videoPlayerController.value.isPlaying) {
+                              _videoPlayerController.pause();
+                              videoPlayerControllerValue = false;
+                            } else {
+                              _videoPlayerController.play();
+                              videoPlayerControllerValue = true;
+                            }
+                          });
+                        },
+                        child: _videoPlayerController.value.isPlaying
+                            ? const VideoActionWidget(
+                                icon: Icons.play_arrow, title: 'Playing')
+                            : const VideoActionWidget(
+                                icon: Icons.pause, title: 'Paused')),
                   ],
                 )
               ],
@@ -139,6 +221,12 @@ class VideoListItem extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _videoPlayerController.dispose();
   }
 }
 
@@ -166,79 +254,5 @@ class VideoActionWidget extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class FastLaughVideoPlayer extends StatefulWidget {
-  final String videoUrl;
-  final Function(bool isPlaying) onStateChanged;
-  const FastLaughVideoPlayer({
-    super.key,
-    required this.videoUrl,
-    required this.onStateChanged,
-  });
-
-  @override
-  State<FastLaughVideoPlayer> createState() => _FastLaughVideoPlayerState();
-}
-
-class _FastLaughVideoPlayerState extends State<FastLaughVideoPlayer> {
-  late VideoPlayerController _videoPlayerController;
-
-  @override
-  void initState() {
-    _videoPlayerController = VideoPlayerController.network(widget.videoUrl);
-    _videoPlayerController.initialize().then((value) {
-      setState(() {
-        _videoPlayerController.play();
-      });
-    });
-    VedioPlayAndPauseButton(videoPlayerController: _videoPlayerController);
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: double.infinity,
-      child: _videoPlayerController.value.isInitialized
-          ? AspectRatio(
-              aspectRatio: _videoPlayerController.value.aspectRatio,
-              child: VideoPlayer(_videoPlayerController))
-          : const Center(
-              child: CircularProgressIndicator(
-              strokeWidth: 2,
-            )),
-    );
-  }
-
-  @override
-  void dispose() {
-    _videoPlayerController.dispose();
-    super.dispose();
-  }
-}
-
-class VedioPlayAndPauseButton extends StatelessWidget {
-  const VedioPlayAndPauseButton({
-    Key? key,
-    required VideoPlayerController videoPlayerController,
-  })  : _videoPlayerController = videoPlayerController,
-        super(key: key);
-
-  final VideoPlayerController _videoPlayerController;
-
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton(
-        onPressed: () {
-          _videoPlayerController.value.isPlaying
-              ? _videoPlayerController.pause()
-              : _videoPlayerController.play();
-        },
-        child: _videoPlayerController.value.isPlaying
-            ? const Icon(Icons.play_arrow)
-            : const Icon(Icons.pause));
   }
 }
